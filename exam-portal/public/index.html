@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exam Portal - Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="login-body">
+<main class="login-wrap">
+  <section class="login-intro">
+    <h1>Online Exam Portal</h1>
+    <p>Students: sign in and wait for your exam to open. Admins: sign in to upload a paper and run the exam.</p>
+  </section>
+  <section class="card login-card">
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-role="student" role="tab" type="button">Student</button>
+      <button class="tab" data-role="admin" role="tab" type="button">Admin</button>
+    </div>
+
+    <form id="studentForm">
+      <label for="sName">Full name</label>
+      <input id="sName" type="text" autocomplete="name" required>
+      <label for="sRoll">Roll number</label>
+      <input id="sRoll" type="text" required>
+      <label for="sEmail">Email (optional, to get a copy)</label>
+      <input id="sEmail" type="email" autocomplete="email">
+      <label for="sCode">Access code (if your teacher gave one)</label>
+      <input id="sCode" type="text" autocomplete="off">
+      <div class="actions"><button class="btn primary block" type="submit">Sign in as student</button></div>
+    </form>
+
+    <form id="adminForm" hidden>
+      <label for="aUser">Username</label>
+      <input id="aUser" type="text" autocomplete="username" value="admin" required>
+      <label for="aPass">Password</label>
+      <input id="aPass" type="password" autocomplete="current-password" required>
+      <div class="actions"><button class="btn primary block" type="submit">Sign in as admin</button></div>
+    </form>
+
+    <p id="err" class="msg error" role="alert"></p>
+  </section>
+</main>
+<script src="/js/common.js"></script>
+<script>
+(function () {
+  const a = Auth.get();
+  if (a) { location.replace(a.role === "admin" ? "/admin.html" : "/student.html"); return; }
+
+  const sf = document.getElementById("studentForm"), af = document.getElementById("adminForm"), err = document.getElementById("err");
+  document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x === t));
+    const admin = t.dataset.role === "admin";
+    af.hidden = !admin; sf.hidden = admin; err.textContent = "";
+  }));
+
+  async function login(payload, btn) {
+    err.textContent = ""; btn.disabled = true;
+    try {
+      const r = await api("/login", { method: "POST", body: payload });
+      Auth.set(r);
+      location.href = r.role === "admin" ? "/admin.html" : "/student.html";
+    } catch (e) { err.textContent = e.message; btn.disabled = false; }
+  }
+  sf.addEventListener("submit", (e) => {
+    e.preventDefault();
+    login({ role: "student", name: sName.value, roll: sRoll.value, email: sEmail.value, code: sCode.value }, sf.querySelector("button[type=submit]"));
+  });
+  af.addEventListener("submit", (e) => {
+    e.preventDefault();
+    login({ role: "admin", username: aUser.value, password: aPass.value }, af.querySelector("button[type=submit]"));
+  });
+})();
+</script>
+</body>
+</html>

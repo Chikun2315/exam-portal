@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exam Portal - Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Exam Portal - Admin</div>
+  <div class="who"><button class="btn ghost sm" id="logout" type="button">Sign out</button></div>
+</header>
+
+<main class="container">
+  <div class="layout">
+    <div>
+      <section class="card">
+        <h2>1. Question paper</h2>
+        <p class="muted small">Upload a PDF where each question is numbered and has options A, B, C, D. Add a line like "Answer: B" under a question if you want the score calculated.</p>
+        <label for="pdfFile">PDF file</label>
+        <input id="pdfFile" type="file" accept="application/pdf">
+        <details>
+          <summary>Or paste the questions as text</summary>
+          <textarea id="pasteText" rows="8" placeholder="1. Question text&#10;A) option&#10;B) option&#10;C) option&#10;D) option&#10;Answer: B"></textarea>
+        </details>
+        <div class="actions"><button class="btn primary" id="readBtn" type="button">Read questions</button></div>
+        <p id="readMsg" class="msg" role="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>2. Check and edit</h2>
+        <div id="settings" hidden>
+          <label for="examTitle">Exam title</label>
+          <input id="examTitle" type="text" value="Online exam">
+          <label for="duration">Exam length (minutes)</label>
+          <input id="duration" type="number" min="1" max="600" value="30">
+          <label class="check"><input id="showResults" type="checkbox"> <span>Show each student their score and the correct answers after they submit (needs answers marked below)</span></label>
+        </div>
+        <div id="editor"></div>
+        <p id="emptyEditor" class="muted">Questions will appear here after you read a paper.</p>
+        <div class="actions" id="editorActions" hidden>
+          <button class="btn" id="addQ" type="button">Add question</button>
+          <button class="btn primary" id="publishBtn" type="button">Submit to student dashboard</button>
+        </div>
+        <p id="pubMsg" class="msg" role="status"></p>
+      </section>
+    </div>
+
+    <aside>
+      <section class="card sticky">
+        <h2>3. Run the exam</h2>
+        <div id="control"><p class="muted">Loading...</p></div>
+      </section>
+    </aside>
+  </div>
+
+  <section class="card">
+    <div class="qhead">
+      <h2>Submissions</h2>
+      <button class="btn sm" id="csvBtn" type="button">Download CSV</button>
+    </div>
+    <div class="tbl-wrap"><table class="tbl" id="subTbl"></table></div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/parser.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>

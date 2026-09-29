@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exam Portal - Student</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Exam Portal</div>
+  <div id="timerWrap" hidden><span class="timer" id="timer">00:00</span></div>
+  <div class="who"><span id="who"></span><button class="btn ghost sm" id="logout" type="button">Sign out</button></div>
+</header>
+
+<main class="container">
+  <div id="net" class="notice" hidden>Connection problem. Retrying...</div>
+
+  <section id="view-dashboard" class="card">
+    <h1>Your exam</h1>
+    <div id="dash"></div>
+  </section>
+
+  <section id="view-exam" hidden>
+    <div class="exam-grid">
+      <div class="card" id="qpane"></div>
+      <aside class="card sticky">
+        <h2>Questions</h2>
+        <div class="legend"><span><i class="g"></i>Answered</span><span><i></i>Not answered</span></div>
+        <div class="palette" id="palette"></div>
+        <p class="small muted" id="tally"></p>
+        <button class="btn primary block" id="submitBtn" type="button">Submit exam</button>
+      </aside>
+    </div>
+  </section>
+
+  <section id="view-done" class="card" hidden>
+    <div id="doneBody"></div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/student.js"></script>
+</body>
+</html>
