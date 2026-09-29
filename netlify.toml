@@ -1,0 +1,9 @@
+# The app lives in the exam-portal/ subfolder. Point Netlify at it so
+# dependencies install there and paths below resolve relative to it.
+[build]
+  base = "exam-portal"
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
